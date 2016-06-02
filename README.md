@@ -33,6 +33,9 @@ export default mixpanel({
   // Mixpanel Token
   token: YOUR_MIXPANEL_TOKEN,
 
+  // Mixpanel token retrieval (optional)
+  getToken: state => state.config.mixpanelToken
+
   // derive Mixpanel event name from action and/or state
   selectEventName: (action, state) => humanize(action.type),
 
@@ -70,6 +73,7 @@ export default mixpanel({
 Configure the `mixpanel` redux middleware by invoking with an options object, containing:
 
 1. `token` – Your Mixpanel application token.
+1. `getToken` – An optional function, that dynamically retrieves your Mixpanel application token, if provided it will override the value of `token`. It is passed `state` as an argument enabling you to pull the mixpanel token from the redux state model.
 2. `ignoreAction` – An optional function, that receives an action and returns a truthy value, if it should be ignored.
 3. `selectDistinctId` – A selector function that returns the `distinct_id` (user id), given the action and store state.
 4. `selectUserProfileData` – A selector function that returns user profile data for a Mixpanel Engage request, given the action and store state.

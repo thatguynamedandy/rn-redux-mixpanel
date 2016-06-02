@@ -3,12 +3,14 @@ import updateUserProfile from './api/updateUserProfile'
 
 export default function mixpanel({
   token,
+  getToken = () => null,
   selectDistinctId = () => null,
   selectUserProfileData = () => null,
   selectEventName = (action) => action.type,
   selectProperties = () => null,
   ignoreAction = (action) => false,
 }) {
+
   return store => next => action => {
     // Don't track falsy actions or actions that should be ignored
     if (!action.type || ignoreAction(action)) {
@@ -20,6 +22,7 @@ export default function mixpanel({
     const distinctId = selectDistinctId(action, state)
     const eventName = selectEventName(action, state)
     const properties = selectProperties(action, state)
+    const token = getToken(state) || token;
 
     // Track action event with Mixpanel
     trackEvent({
